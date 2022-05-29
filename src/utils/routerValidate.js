@@ -55,7 +55,8 @@ const schemas = {
 
     authSignInSchema: Joi.object().keys({
         email: Joi.string().email().required().messages(customMessage('email')),
-        password: Joi.string().min(6).max(32).required().messages(customMessage('password'))
+        password: Joi.string().min(6).max(32).required().messages(customMessage('password')),
+        tokenDevice: Joi.string().required().messages(customMessage('tokenDevice')),
     }),
 
     idSchema: Joi.object().keys({

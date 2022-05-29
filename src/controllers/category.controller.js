@@ -1,4 +1,6 @@
 const Category = require('../models/Category')
+const Product = require('../models/Product')
+const PAGE_SIZE = 2
 
 
 const index = async (req, res, next) => {
@@ -15,9 +17,34 @@ const newCategory = async (req, res, next) => {
     return res.status(201).json({ success: true, data: newCategory })
 }
 
+const getProductByCategory = async (req, res, next) => {
+    // const products = await Product.find({ category: req.params._id }, { description: 0, size: 0, color: 0, createdAt: 0, updatedAt: 0, __v: 0 }).populate('category', 'name')
 
+    // return res.status(200).json({ 
+    //     success: true,
+    //     data: products
+    // })
+    // setTimeout(() => {
+    //     return res.status(200).json([...products])
+    // }, 3000)
+
+    const page = + req.query.page
+    if(page) {
+        const countSkip = (page - 1) * PAGE_SIZE
+        const products = await Product.find({ category: req.params._id }, { description: 0, size: 0, color: 0, createdAt: 0, updatedAt: 0, __v: 0 }).populate('category', 'name')
+                                .skip(countSkip).limit(PAGE_SIZE)
+        setTimeout(() => {
+            return res.status(200).json([...products])
+        }, 1000)
+    }
+    else {
+        const products = await Product.find({ category: req.params._id }, { description: 0, size: 0, color: 0, createdAt: 0, updatedAt: 0, __v: 0 }).populate('category', 'name')
+        return res.status(200).json([...products])
+    }
+}
 
 module.exports = { 
     index,
-    newCategory
+    newCategory,
+    getProductByCategory
 }

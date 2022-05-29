@@ -10,6 +10,7 @@ const customPassport = require('../middlewares/customPassport')
 
 router.get('/', categoryController.index)
 router.post('/', categoryController.newCategory)
+router.get('/:_id', categoryController.getProductByCategory)
 
 
 

@@ -11,6 +11,8 @@ const customPassport = require('../middlewares/customPassport')
 router.get('/', userController.index)
 router.post('/signup', validateBody(schemas.authSignUpSchema), userController.signUp)
 router.post('/signin', validateBody(schemas.authSignInSchema), customPassport.passportLocal, userController.signIn)
+router.post('/logout', customPassport.passportJWT, userController.logout)
+router.get('/profile', customPassport.passportJWT, userController.getProfile)
 
 
 

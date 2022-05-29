@@ -21,7 +21,15 @@ const UserSchema = new Schema(
         role: {
             type: String,
             default: 'user'
-        }
+        },
+        favorites: [{
+            type: Schema.Types.ObjectId,
+            ref: 'Product'
+        }],
+        tokenDevices: {
+            type: Array,
+            default: []
+        },
     },
     {
         timestamps: true,

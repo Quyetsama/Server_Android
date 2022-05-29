@@ -6,6 +6,8 @@ const customPassport = require('../middlewares/customPassport')
 const passportConfig = require('../middlewares/passport')
 
 
+
+router.get('/', customPassport.passportJWT, notifyController.getNotify)
 router.post('/', notifyController.index)
 
 
