@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const JWT = require('../utils/jwt')
+const bcrypt = require('bcryptjs') 
 
 
 const index = async (req, res, next) => {
@@ -17,7 +18,7 @@ const signUp = async (req, res, next) => {
     const foundUser = await User.findOne({ email })
     if(foundUser) return res.status(403).json({
         success: false,
-        message: 'Email is already in use'
+        message: 'Email is already in use',
     })
 
     // New user
@@ -67,6 +68,48 @@ const getProfile = async (req, res, next) => {
     return res.status(200).json(profile)
 }
 
+const updateProfile = async (req, res, next) => {
+    const { fullName, currentPassword, newPassword1, newPassword2 } = req.body
+    let passwordHashed
+
+
+    if(currentPassword && newPassword1 && newPassword2) {
+        const isCorrectPassword = await req.user.isValidPassword(currentPassword)
+        if(!isCorrectPassword) {
+            return res.status(403).json({
+                success: false,
+                message: "Current password is incorrect"
+            })
+        }
+        else if(newPassword1 !== newPassword2) {
+            return res.status(403).json({
+                success: false,
+                message: "New password and confirm password not same"
+            })
+        }
+        else {
+            // Generate a satl
+            const satl = await bcrypt.genSalt(10)
+            // Generate a password hash (satl + hash)
+            passwordHashed = await bcrypt.hash(newPassword1, satl)
+        }
+    }
+
+    await User.updateOne(
+        { _id: req.user._id },
+        {
+            ...(fullName && { fullName: fullName }),
+            ...(passwordHashed && { password: passwordHashed })
+        }
+    )
+
+    return res.status(201).json({
+        success: true,
+        message: "Update profile successfully"
+    })
+
+}
+
 
 
 module.exports = { 
@@ -74,5 +117,6 @@ module.exports = {
     signUp,
     signIn,
     logout,
-    getProfile
+    getProfile,
+    updateProfile
 }

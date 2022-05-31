@@ -24,7 +24,7 @@ const validateBody = (schema) => {
         if(validatorResult.error) {
             return res.status(403).json({
                 success: false,
-                message: validatorResult.error.details[0].message
+                message: validatorResult.error.details[0].message,
             })
         }
         else {  

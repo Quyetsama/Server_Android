@@ -13,6 +13,7 @@ router.post('/signup', validateBody(schemas.authSignUpSchema), userController.si
 router.post('/signin', validateBody(schemas.authSignInSchema), customPassport.passportLocal, userController.signIn)
 router.post('/logout', customPassport.passportJWT, userController.logout)
 router.get('/profile', customPassport.passportJWT, userController.getProfile)
+router.patch('/profile', customPassport.passportJWT, userController.updateProfile)
 
 
 
