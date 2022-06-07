@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8000
+const cors = require('cors')
 const logger = require('morgan')
 const route = require('./src/routes')
 const secureApp = require("helmet")
@@ -9,6 +10,9 @@ const db = require("./src/db")
 
 const app = express()
 
+app.use(cors({
+    origin: '*'
+}))
 app.use(express.json())
 // app.use(express.urlencoded({ extended: true }))
 // app.use(express.urlencoded({ extended: true }))

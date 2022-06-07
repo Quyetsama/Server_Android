@@ -50,6 +50,20 @@ const signIn = async (req, res, next) => {
     return res.status(200).json({...profile})
 }
 
+const signInAdmin = async (req, res, next) => {
+    const token = JWT.encodedToken(req.user._id)
+
+    const profile = {
+        _id: req.user._id,
+        fullName: req.user.fullName,
+        email: req.user.email,
+        role: req.user.role
+    }
+
+    res.setHeader('Authorization', 'bearer ' + token)
+    return res.status(200).json({...profile, token, success: true })
+}
+
 const logout = async (req, res, next) => {
     const { tokenDevice } = req.body
 
@@ -116,6 +130,7 @@ module.exports = {
     index,
     signUp,
     signIn,
+    signInAdmin,
     logout,
     getProfile,
     updateProfile

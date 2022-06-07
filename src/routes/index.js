@@ -3,6 +3,7 @@ const categoryRouter = require('./category.route')
 const productRouter = require('./product.route')
 const orderRouter = require('./order.route')
 const notifyRouter = require('./notify.route')
+const adminRouter = require('./admin.route')
 
 
 const route = (app) => {
@@ -12,6 +13,7 @@ const route = (app) => {
     app.use('/api/product', productRouter)
     app.use('/api/order', orderRouter)
     app.use('/api/notification', notifyRouter)
+    app.use('/api/admin', adminRouter)
     
     app.get('/', (req, res, next) => {
         return res.status(200).json({
